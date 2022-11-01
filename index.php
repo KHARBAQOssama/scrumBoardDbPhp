@@ -1,5 +1,5 @@
 <?php
-    include('scripts.php');
+    include('script.php');
 ?>
 
 <!DOCTYPE html>
@@ -12,13 +12,14 @@
 	<meta content="" name="author" />
 	
 	<!-- ================== BEGIN core-css ================== -->
+	
 	<link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet" />
 	<link href="assets/css/vendor.min.css" rel="stylesheet" />
 	<link href="assets/css/default/app.min.css" rel="stylesheet" />
-	<link rel="stylesheet" href="./assets/css/style.css">
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css">
+	
 	<!-- CSS only -->
-	<!-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
-	================== END core-css ================== -->
+	<!--	================== END core-css ================== -->
 </head>
 <body>
 	<!-- BEGIN #loader -->
@@ -58,6 +59,7 @@
 					</a>
 					<div class="dropdown-menu media-list dropdown-menu-end">
 						<div class="dropdown-header">NOTIFICATIONS (5)</div>
+						
 						<a href="javascript:;" class="dropdown-item media">
 							<div class="media-left">
 								<i class="fa fa-bug media-object bg-gray-500"></i>
@@ -224,7 +226,7 @@
 				</div>
 				
 				<div class="ms-auto">
-				<a href="#modal-task" data-bs-toggle="modal" class="btn btn-success btn-rounded px-4 rounded-pill"><i class="fa fa-plus fa-lg me-2 ms-n2 text-success-900"></i> Add Task</a>
+				<a href="#modal-task" data-bs-toggle="modal" id="addBtn" onclick="changeFormStatus();" class="btn btn-success btn-rounded px-4 rounded-pill d-block mb-2"><i class="fa fa-plus fa-lg me-2 ms-n2 text-success-900"></i> Add Task</a>
 				</div>
 			</div>
 			
@@ -268,35 +270,10 @@
 						</div>
 						<div class="list-group list-group-flush rounded-bottom overflow-hidden panel-body p-0" id="to-do-tasks">
 							<!-- TO DO TASKS HERE -->
-							<!-- <button class="border-0 w-100 rounded mb-2 shadow-sm d-flex text-start align-items-center">
-                				<div class="editD">
-									<i class="bi bi-trash mt-2" ></i>
-									<i class="bi bi-pencil-square" onclick="fullForm(${i});" data-bs-toggle="modal" href="#modal-task" mt-1" href="#"></i>
-								</div>
-								<div class="" style="width: 10%;">
-									<i class="bi bi-exclamation fw-bold fs-15px"></i> 
-								</div>
-                				<div class="d-flex justify-content-between w-100"> 
-                    				<div class="col-10 ">
-								<div class="fw-bolder fs-6" style="text-overflow: ellipsis; overflow: hidden;  height: 1.8em; white-space: nowrap; max-width: 25ch;">title</div>
-								<div class="fs-10px text-gray">date</div>
-								<div class=" mb-1 fs-10px" title="${tasks[i].description}" style="text-overflow: ellipsis; overflow: hidden; height: 1.5em; white-space: nowrap; max-width: 25ch;">
-								hello world
-								</div>
-								</div>
-								<div class="col-2 d-flex justify-content-center flex-column">
-								
-										<span class="rounded text-center mb-1 fs-8px" style="">feature</span>
-										<span class=" text-center  fs-8px " style="border: 1px solid rgb(0,0,0); border-radius: 4px;">high</span>
-								</div>
-								</div>
-            				</button> -->
-						
 							<?php
-							
 								//PHP CODE HERE
 								//DATA FROM getTasks() FUNCTION
-								getTasks('To Do');
+								getTasks(1);
 							?>
 						</div>
 					</div>
@@ -304,7 +281,7 @@
 				<div class="col-xl-4 col-lg-6">
 					<div class="panel panel-inverse">
 						<div class="panel-heading">
-							<h4 class="panel-title">In Progress (<span id="in-progress-tasks-count">0</span>)</h4>
+							<h4 class="panel-title">In Progress (<span id="in-progress-tasks-count"></span>)</h4>
 							<div class="panel-heading-btn">
 								<a href="javascript:;" class="btn btn-xs btn-icon btn-default" data-toggle="panel-expand"><i class="fa fa-expand"></i></a>
 								<a href="javascript:;" class="btn btn-xs btn-icon btn-success" data-toggle="panel-reload"><i class="fa fa-redo"></i></a>
@@ -318,7 +295,7 @@
 							
 								//PHP CODE HERE
 								//DATA FROM getTasks() FUNCTION
-								getTasks('In Progress');
+								getTasks(2);
 							?>
 						</div>
 					</div>
@@ -340,7 +317,7 @@
 							
 								//PHP CODE HERE
 								//DATA FROM getTasks() FUNCTION
-								getTasks('Done');
+								getTasks(3);
 							?>
 						</div>
 					</div>
@@ -357,26 +334,26 @@
 	<!-- END #app -->
 	
 	<!-- TASK MODAL -->
-	<div class="modal fade" id="modal-task">
+	<div class="modal fade" id="modal-task" >
 		<div class="modal-dialog">
 			<div class="modal-content">
-				<form action="scripts.php" method="POST" id="form-task">
+				<form action="script.php" method="POST"  name="form-task">
 					<div class="modal-header">
-						<h5 class="modal-title">Add Task</h5>
+						<h5 class="modal-title" id="form-title">Add Task</h5>
 						<a href="#" class="btn-close" data-bs-dismiss="modal"></a>
 					</div>
 					<div class="modal-body">
 							<!-- This Input Allows Storing Task Index  -->
-							<input type="hidden" id="task-id">
 							<div class="mb-3">
 								<label class="form-label">Title</label>
-								<input type="text" name="title" class="form-control" id="task-title"/>
+								<input type="hidden" name="idT" id="idT">
+								<input type="text" name="title" class="form-control" id="task-title" require/>
 							</div>
 							<div class="mb-3">
 								<label class="form-label">Type</label>
 								<div class="ms-3">
 									<div class="form-check mb-1">
-										<input class="form-check-input" name="task-type" type="radio" value="1" id="task-type-feature"/>
+										<input class="form-check-input" name="task-type" type="radio" value="1" id="task-type-feature" checked/>
 										<label class="form-check-label" for="task-type-feature">Feature</label>
 									</div>
 									<div class="form-check">
@@ -389,7 +366,7 @@
 							<div class="mb-3">
 								<label class="form-label">Priority</label>
 								<select class="form-select" name="priority" id="task-priority">
-									<option value="">Please select</option>
+									<option value="" disabled>Please select</option>
 									<option value="1">Low</option>
 									<option value="2">Medium</option>
 									<option value="3">High</option>
@@ -399,7 +376,7 @@
 							<div class="mb-3">
 								<label class="form-label">Status</label>
 								<select class="form-select" name="status" id="task-status">
-									<option value="">Please select</option>
+									<option value="" disabled>Please select</option>
 									<option value="1">To Do</option>
 									<option value="2">In Progress</option>
 									<option value="3">Done</option>
@@ -407,18 +384,17 @@
 							</div>
 							<div class="mb-3">
 								<label class="form-label">Date</label>
-								<input type="date" name="date" class="form-control" id="task-date"/>
+								<input type="date" name="date" class="form-control" id="task-date" require/>
 							</div>
 							<div class="mb-0">
 								<label class="form-label">Description</label>
-								<textarea class="form-control" name="description" rows="10" id="task-description"></textarea>
+								<textarea class="form-control" name="description" rows="10" id="task-description" require></textarea>
 							</div>
 						
 					</div>
 					<div class="modal-footer">
 						<a href="#" class="btn btn-white" data-bs-dismiss="modal">Cancel</a>
-						<button type="submit" name="delete" class="btn btn-danger task-action-btn" id="task-delete-btn">Delete</a>
-						<button type="submit" name="update" class="btn btn-warning task-action-btn" id="task-update-btn">Update</a>
+						<button type="submit" name="update" class="btn btn-warning task-action-btn" id="task-update-btn" >Update</a>
 						<button type="submit" name="save" class="btn btn-primary task-action-btn" id="task-save-btn">Save</button>
 					</div>
 				</form>
@@ -430,12 +406,7 @@
 	<script src="assets/js/vendor.min.js"></script>
 	<script src="assets/js/app.min.js"></script>
 	<!-- ================== END core-js ================== -->
-	<script src="scripts.js"></script>
+	<script src="app.js"></script>
 
-	<script>
-		//reloadTasks();
-	</script>
-	<!-- JavaScript Bundle with Popper -->
-	<!-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3" crossorigin="anonymous"></script> -->
 </body>
 </html>
