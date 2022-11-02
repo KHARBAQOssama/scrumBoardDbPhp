@@ -9,10 +9,12 @@
     if(isset($_POST['update']))      updateTask();
     if(isset($_POST['delete']))      deleteTask();   
     
+
+    // function to display data 
     function getTasks($x)
     {   
+        
         global $conn;
-        //CODE HERE
         //SQL SELECT
         $sql = "SELECT t.id, t.title, types.name AS taskType, priorities.name AS taskPriority, priorities.id AS piD, t.status_id,  t.task_datetime,t.description FROM tasks t INNER JOIN types ON t.type_id = types.id INNER JOIN priorities ON t.priority_id = priorities.id INNER JOIN statuses ON t.status_id = statuses.id;";
         $result = mysqli_query($conn, $sql);
@@ -66,15 +68,23 @@
                                     </div>
                                 </div>
 								</div>
-            				</form>
-                            
+            				</form> 
             <?php
-            
              }
          }
     }
 
 
+    // function to count how many tasks have the same status
+    function counter($x){
+        global $conn;
+        $sql = "SELECT COUNT(*) FROM `tasks` WHERE `status_id` = '$x'";
+        $result = mysqli_query($conn, $sql);
+        $row = mysqli_fetch_assoc($result);
+        echo $row['COUNT(*)'];
+    }
+
+    // function to store to store data in the db from the form 
     function saveTask()
     {
         global $conn;
@@ -99,6 +109,8 @@
         
     }
 
+
+    // ediit part 
     function updateTask()
     {
         global $conn;
@@ -111,22 +123,24 @@
         $date = $_POST['date'];
         $description = $_POST['description'];
         $taskId = $_POST['idT'];
-        
-        $sql = "UPDATE tasks SET title = '$title',type_id = '$taskType', priority_id= '$priority',status_id = '$status',task_datetime = '$date' ,description = '$description' WHERE id = '$taskId';";  
         //SQL UPDATE
+        $sql = "UPDATE tasks SET title = '$title',type_id = '$taskType', priority_id= '$priority',status_id = '$status',task_datetime = '$date' ,description = '$description' WHERE id = '$taskId';";  
+        
         $result = mysqli_query($conn, $sql);
         $_SESSION['message'] = "Task has been updated successfully !";
 		header('location: index.php');
     }
 
+    // delete part 
     function deleteTask()
     {
         //CODE HERE
         global $conn;
         $taskId = $_POST['id'];
+        //SQL DELETE
         $sql = "DELETE FROM `tasks` WHERE `id`='$taskId'";
         $result = mysqli_query($conn, $sql);
-        //SQL DELETE
+        
         $_SESSION['message'] = "Task has been deleted successfully !";
 		header('location: index.php');
     }

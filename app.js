@@ -1,8 +1,14 @@
-const addBtn = document.getElementById("addBtn") ;
-const formTitle = document.getElementById("form-title");
-const updateBtn = document.getElementById("task-update-btn");
-const saveBtn = document.getElementById("task-save-btn");
+        const addBtn = document.getElementById("addBtn") ;
+        const formTitle = document.getElementById("form-title");
+        const updateBtn = document.getElementById("task-update-btn");
+        const saveBtn = document.getElementById("task-save-btn");
 
+        // get inputs by their id
+        let title = document.getElementById('task-title');
+        let priority = document.getElementById('task-priority');
+        let taskStaus = document.getElementById('task-status');
+        let date = document.getElementById('task-date');
+        let description = document.getElementById('task-description');
 
 function resetForm(){
     document.getElementById('task-title').value = '';
@@ -12,6 +18,7 @@ function resetForm(){
     document.getElementById('task-date').value = '';
     document.getElementById('task-description').value = '';
 }
+
 function changeFormStatus(){
     formTitle.innerHTML='ADD TASK';
     saveBtn.style.display='inline-block';
@@ -38,3 +45,4 @@ function fullForm(id,title,type,priority,status,date,description)
     document.getElementById('task-date').value = date;
     document.getElementById('task-description').value = description;
 }
+
